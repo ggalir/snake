@@ -21,54 +21,65 @@ const CTX = canvas.getContext('2d')
 CANVAS.height = COLS * BLOCK_SIZE
 CANVAS.width = ROWS * BLOCK_SIZE
 
+CTX.fillStyle = 'black'
+CTX.fillRect(0, 0, CANVAS.width, CANVAS.height)
+
+MainLoop.setSimulationTimestep(125)
+MainLoop.setMaxAllowedFPS(8)
+MainLoop.setBegin(begin).setUpdate(update).setDraw(draw).setEnd(end).start()
 
 document.addEventListener('keydown', changeDir)
-gameLoop = setInterval(update, 100)
 
-function update(){
+
+function begin(){
     // draw board
     CTX.fillStyle = 'black'
     CTX.fillRect(0, 0, CANVAS.width, CANVAS.height)
+}
 
-    // draw food
-    CTX.fillStyle = 'red'
-    CTX.fillRect(foodX, foodY, BLOCK_SIZE, BLOCK_SIZE)
-
-    // check if food eaten
+function update(){
+    
     if(snakeX == foodX && snakeY == foodY){
-        snakeBody.push([foodX, foodY])
         newFood()
-        CTX.fillStyle = 'red'
-        CTX.fillRect(foodX, foodY, BLOCK_SIZE, BLOCK_SIZE)
+        snakeBody.push([snakeX, snakeY])
     }
-        
-    // move snake body
+    
     for (let i = snakeBody.length-1; i > 0; i--) {
         snakeBody[i] = snakeBody[i-1];
     }
-
+    
     if (snakeBody.length) {
         snakeBody[0] = [snakeX, snakeY];
     }
-
-    // draw snake
-    CTX.fillStyle = 'blue'
+    
     snakeX += velocityX * BLOCK_SIZE
     snakeY += velocityY * BLOCK_SIZE
-    CTX.fillRect(snakeX, snakeY, BLOCK_SIZE, BLOCK_SIZE)
+    
+}
 
+function draw(){
+    // draw food
+    CTX.fillStyle = 'red'
+    CTX.fillRect(foodX, foodY, BLOCK_SIZE, BLOCK_SIZE)
+    
+    // draw snake
+    CTX.fillStyle = 'blue'
+    CTX.fillRect(snakeX, snakeY, BLOCK_SIZE, BLOCK_SIZE)
+    
     for(let i = 0; i < snakeBody.length; i++){
         CTX.fillRect(snakeBody[i][0], snakeBody[i][1], BLOCK_SIZE, BLOCK_SIZE)
     }
+}
 
+function end(){
     // check if lost
-    if (snakeX < 0 || snakeX > COLS * BLOCK_SIZE || snakeY < 0 || snakeY > ROWS * BLOCK_SIZE){
-        clearInterval(gameLoop)
+    if (snakeX < 0 || snakeX > (COLS * BLOCK_SIZE) - BLOCK_SIZE || snakeY < 0 || snakeY > (ROWS * BLOCK_SIZE) - BLOCK_SIZE){
+        MainLoop.stop()
     }
-
+    
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
-            clearInterval(gameLoop)
+            MainLoop.stop()
         }
     }
 }
