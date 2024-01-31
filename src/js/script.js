@@ -76,11 +76,19 @@ function end(){
     // check if lost
     if (snakeX < 0 || snakeX > (COLS * BLOCK_SIZE) - BLOCK_SIZE || snakeY < 0 || snakeY > (ROWS * BLOCK_SIZE) - BLOCK_SIZE){
         MainLoop.stop()
+        CTX.font = "30px Rockwell";
+        CTX.fillStyle = "white";
+        CTX.textAlign = "center";
+        CTX.fillText("Game Over", canvas.width / 2, canvas.height / 2);
     }
     
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
             MainLoop.stop()
+            CTX.font = "30px Rockwell";
+            CTX.fillStyle = "white";
+            CTX.textAlign = "center";
+            CTX.fillText("Game Over", canvas.width / 2, canvas.height / 2);
         }
     }
 }
