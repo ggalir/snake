@@ -24,11 +24,13 @@ CANVAS.width = ROWS * BLOCK_SIZE
 CTX.fillStyle = 'black'
 CTX.fillRect(0, 0, CANVAS.width, CANVAS.height)
 
+document.addEventListener('keydown', changeDir)
+
 MainLoop.setSimulationTimestep(125)
 MainLoop.setMaxAllowedFPS(8)
-MainLoop.setBegin(begin).setUpdate(update).setDraw(draw).setEnd(end).start()
 
-document.addEventListener('keydown', changeDir)
+
+MainLoop.setBegin(begin).setUpdate(update).setDraw(draw).setEnd(end).start()
 
 
 function begin(){
@@ -38,12 +40,12 @@ function begin(){
 }
 
 function update(){
-    
     if(snakeX == foodX && snakeY == foodY){
         newFood()
         snakeBody.push([snakeX, snakeY])
     }
     
+    // move snakes body
     for (let i = snakeBody.length-1; i > 0; i--) {
         snakeBody[i] = snakeBody[i-1];
     }
@@ -54,7 +56,6 @@ function update(){
     
     snakeX += velocityX * BLOCK_SIZE
     snakeY += velocityY * BLOCK_SIZE
-    
 }
 
 function draw(){
@@ -90,6 +91,8 @@ function newFood(){
 }
 
 function changeDir(e){
+    // currentInput
+    // 1 - right, 2 - down, 3- left, 4 - up
     if (e.code == "ArrowUp" && velocityY != 1) {
         velocityX = 0;
         velocityY = -1;
