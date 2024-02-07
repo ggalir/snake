@@ -52,11 +52,11 @@ function update(){
     
     // move snakes body
     for (let i = snakeBody.length-1; i > 0; i--) {
-        snakeBody[i] = snakeBody[i-1];
+        snakeBody[i] = snakeBody[i-1]
     }
     
     if (snakeBody.length) {
-        snakeBody[0] = [snakeX, snakeY];
+        snakeBody[0] = [snakeX, snakeY]
     }
     
     // move snakes head
@@ -94,8 +94,8 @@ function end(){
 }
 
 function newFood(){
-        foodX = Math.floor(Math.random() * COLS) * BLOCK_SIZE;
-        foodY = Math.floor(Math.random() * ROWS) * BLOCK_SIZE;
+        foodX = Math.floor(Math.random() * COLS) * BLOCK_SIZE
+        foodY = Math.floor(Math.random() * ROWS) * BLOCK_SIZE
 }
 
 function changeDir(e){
@@ -106,20 +106,20 @@ function changeDir(e){
     // currentInput
     // 1 - right, 2 - down, 3- left, 4 - up
     if (e.code == "ArrowUp" && velocityY != 1) {
-        velocityX = 0;
-        velocityY = -1;
+        velocityX = 0
+        velocityY = -1
     }
     else if (e.code == "ArrowDown" && velocityY != -1) {
-        velocityX = 0;
-        velocityY = 1;
+        velocityX = 0
+        velocityY = 1
     }
     else if (e.code == "ArrowLeft" && velocityX != 1) {
-        velocityX = -1;
-        velocityY = 0;
+        velocityX = -1
+        velocityY = 0
     }
     else if (e.code == "ArrowRight" && velocityX != -1) {
-        velocityX = 1;
-        velocityY = 0;
+        velocityX = 1
+        velocityY = 0
     }
 }
 
@@ -138,10 +138,10 @@ function resetGame(){
 }
 
 function displayGameOverScreen(){
-    CTX.font = "30px \"Lucida Console\"";
-    CTX.fillStyle = "white";
-    CTX.textAlign = "center";
-    CTX.fillText("Game Over", canvas.width / 2, canvas.height / 2);
-    CTX.font = "20px \"Lucida Console\"";
-    CTX.fillText("press arrow key to play again!", canvas.width / 2, canvas.height / 2 + canvas.height/15);
+    CTX.font = "30px \"Lucida Console\""
+    CTX.fillStyle = "white"
+    CTX.textAlign = "center"
+    CTX.fillText("Game Over", canvas.width / 2, canvas.height / 2)
+    CTX.font = "20px \"Lucida Console\""
+    CTX.fillText("press arrow key to play again!", canvas.width / 2, canvas.height / 2 + canvas.height/15)
 }
