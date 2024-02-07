@@ -15,6 +15,9 @@ let snakeBody = []
 
 let currentInput = 0 // TODO - disable multiinput
 
+let score = 0
+let scoreCounter = document.getElementById('score')
+
 const CANVAS = document.getElementById('canvas')
 const CTX = canvas.getContext('2d')
 
@@ -41,8 +44,10 @@ function begin(){
 
 function update(){
     if(snakeX == foodX && snakeY == foodY){
+        snakeBody.push([foodX, foodY])
         newFood()
-        snakeBody.push([snakeX, snakeY])
+        score += 1
+        scoreCounter.innerHTML = score
     }
     
     // move snakes body
@@ -54,6 +59,7 @@ function update(){
         snakeBody[0] = [snakeX, snakeY];
     }
     
+    // move snakes head
     snakeX += velocityX * BLOCK_SIZE
     snakeY += velocityY * BLOCK_SIZE
 }
@@ -76,29 +82,27 @@ function end(){
     // check if lost
     if (snakeX < 0 || snakeX > (COLS * BLOCK_SIZE) - BLOCK_SIZE || snakeY < 0 || snakeY > (ROWS * BLOCK_SIZE) - BLOCK_SIZE){
         MainLoop.stop()
-        CTX.font = "30px Rockwell";
-        CTX.fillStyle = "white";
-        CTX.textAlign = "center";
-        CTX.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+        displayGameOverScreen()
     }
     
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
             MainLoop.stop()
-            CTX.font = "30px Rockwell";
-            CTX.fillStyle = "white";
-            CTX.textAlign = "center";
-            CTX.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+            displayGameOverScreen()
         }
     }
 }
 
 function newFood(){
-    foodX = Math.floor(Math.random() * COLS) * BLOCK_SIZE
-    foodY = Math.floor(Math.random() * ROWS) * BLOCK_SIZE
+        foodX = Math.floor(Math.random() * COLS) * BLOCK_SIZE;
+        foodY = Math.floor(Math.random() * ROWS) * BLOCK_SIZE;
 }
 
 function changeDir(e){
+    if(!MainLoop.isRunning()){
+        resetGame()
+        MainLoop.start()
+    }
     // currentInput
     // 1 - right, 2 - down, 3- left, 4 - up
     if (e.code == "ArrowUp" && velocityY != 1) {
@@ -117,4 +121,27 @@ function changeDir(e){
         velocityX = 1;
         velocityY = 0;
     }
+}
+
+function resetGame(){
+    snakeX = BLOCK_SIZE * 3
+    snakeY = BLOCK_SIZE * 7
+
+    foodX = BLOCK_SIZE * 10
+    foodY = BLOCK_SIZE * 7
+
+    velocityX = 0
+    velocityY = 0
+
+    snakeBody = []
+    score = 0
+}
+
+function displayGameOverScreen(){
+    CTX.font = "30px \"Lucida Console\"";
+    CTX.fillStyle = "white";
+    CTX.textAlign = "center";
+    CTX.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+    CTX.font = "20px \"Lucida Console\"";
+    CTX.fillText("press arrow key to play again!", canvas.width / 2, canvas.height / 2 + canvas.height/15);
 }
